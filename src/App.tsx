@@ -1,10 +1,17 @@
 import './App.css'
 import bannerImage from './assets/download.svg'
 import Slider from './component/Slider'
+import CheckBox from './component/CheckBox';
 import React from 'react';
+import { CheckboxValuesType } from './interface';
 
-function App() {  
+function App() {
   const [passwordLength, setPasswordLength] = React.useState<number>(10);
+  const [checkboxValues, setCheckboxValues] = React.useState<CheckboxValuesType>({
+    uppercase: true,
+    special: true,
+    number: true,
+  })
 
   const handleSlide = (value: number) => {
     setPasswordLength(value);
@@ -38,13 +45,12 @@ function App() {
           <div className='mt-10'>
             <div className='flex justify-between'>
               <h3 className='text-lg'>Password length : <span className='text-lg font-medium'>{passwordLength}</span></h3>
-              <Slider onSlide={handleSlide}/>
+              <Slider onSlide={handleSlide} />
             </div>
           </div>
-          <div className='mt-5'>
+          <div className='mt-10'>
             <div>
-              <h3 className='text-lg'>Characters used : </h3>
-              
+              <CheckBox checkboxValues={checkboxValues} setCheckboxValues={setCheckboxValues} />
             </div>
           </div>
         </div>
