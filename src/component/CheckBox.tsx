@@ -1,22 +1,8 @@
 import React from 'react'
 import '../App.css'
-import { CheckboxValuesType, CheckBoxProps } from '../interface'
+import {  CheckBoxProps } from '../interface'
 
 const CheckBox: React.FC<CheckBoxProps> = ({ checkboxValues, setCheckboxValues }) => {
-
-    const [values, setValues] = React.useState<CheckboxValuesType>(checkboxValues)
-    const handleCheckboxChange = (name: keyof CheckboxValuesType) => {
-        setValues((prevValues) => ({
-            ...prevValues,
-            [name]: !prevValues[name],
-        }));
-    };
-
-    React.useEffect(() => {
-        setCheckboxValues(values);
-    }, [values, setCheckboxValues]);
-
-
     return (
         <div className='flex justify-between'>
             <div className='flex gap-2'>
@@ -24,8 +10,11 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxValues, setCheckboxValues }
                     type="checkbox"
                     name="uppercase"
                     id="uppercase"
-                    checked={values.uppercase}
-                    onChange={() => handleCheckboxChange('uppercase')} />
+                    checked={checkboxValues.uppercase}
+                    onChange={() => setCheckboxValues(prevState => ({
+                        ...prevState,
+                        uppercase:!prevState.uppercase,
+                    }))} />
                 <label className='cursor-pointer text-lg' htmlFor="uppercase">uppercase</label>
             </div>
             <div className='flex gap-2'>
@@ -33,8 +22,11 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxValues, setCheckboxValues }
                     type="checkbox"
                     name="special"
                     id="special"
-                    checked={values.special}
-                    onChange={() => handleCheckboxChange("special")} />
+                    checked={checkboxValues.special}
+                    onChange={() => setCheckboxValues(prevState => ({
+                        ...prevState,
+                        special:!prevState.special
+                    }))} />
                 <label className='cursor-pointer text-lg' htmlFor="special">special</label>
             </div>
             <div className='flex gap-2'>
@@ -42,8 +34,11 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxValues, setCheckboxValues }
                     type="checkbox"
                     name="number"
                     id="number"
-                    checked={values.number}
-                    onChange={() => handleCheckboxChange("number")} />
+                    checked={checkboxValues.number}
+                    onChange={() => setCheckboxValues(prevState => ({
+                        ...prevState,
+                        number:!prevState.number
+                    }))} />
                 <label className='cursor-pointer text-lg' htmlFor="number">number</label>
             </div>
         </div>

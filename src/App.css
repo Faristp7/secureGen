@@ -1,25 +1,25 @@
 input[type="checkbox"] {
-    transform: scale(1.8); /* Adjust the scale factor as needed */
+  transform: scale(1.8); /* Adjust the scale factor as needed */
 }
 
 /* Change the color of the checkbox when checked */
 /* Hide the default checkbox */
 /* Hide the default checkbox */
 input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 /* Create a custom checkmark using ::before pseudo-element */
 input[type="checkbox"]::before {
-    content: '\2713'; /* Unicode character for a checkmark */
-    display: inline-block;
-    font-size: 0.9em; /* Adjust the size as needed */
-    color: #ccc; /* Default color for unchecked checkbox */
+  content: "\2713"; /* Unicode character for a checkmark */
+  display: inline-block;
+  font-size: 0.9em; /* Adjust the size as needed */
+  color: #ff0000; /* Default color for unchecked checkbox */
 }
 
 /* Change the color of the checkmark when checked */
 input[type="checkbox"]:checked::before {
-    color: black; /* Change to the desired color */
+  color: rgb(9, 239, 13); /* Change to the desired color */
 }

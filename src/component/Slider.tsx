@@ -1,11 +1,12 @@
 import React from 'react';
+import '../App.css'
 
 interface SliderProps {
   onSlide: (value: number) => void;
 }
 
 const Slider: React.FC<SliderProps> = ({ onSlide }) => {
-  const [value, setValue] = React.useState<number>();
+  const [value, setValue] = React.useState<number>(15);
 
   const handleSlide = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value, 10);
@@ -14,7 +15,7 @@ const Slider: React.FC<SliderProps> = ({ onSlide }) => {
   };
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="flex-1 max-w-xs">
       <input
         type="range"
         id="slider"
