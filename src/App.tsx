@@ -7,41 +7,41 @@ import { CheckboxValuesType } from './interface';
 
 function App() {
   const [passwordLength, setPasswordLength] = React.useState<number>(10);
-  const [status ,setStatus] = React.useState<string>('good');
-  const [generatedPassowrd ,setGeneratedPassowrd] = React.useState<string>('');
+  const [status, setStatus] = React.useState<string>('good');
+  const [generatedPassowrd, setGeneratedPassowrd] = React.useState<string>('');
   const [checkboxValues, setCheckboxValues] = React.useState<CheckboxValuesType>({
     uppercase: true,
     special: true,
     number: true,
   })
-  
+
   const handleSlide = (value: number) => {
-    setPasswordLength(value); 
+    setPasswordLength(value);
   };
 
-  const generateCharacterPool = (checkboxValues : CheckboxValuesType) => {
+  const generateCharacterPool = (checkboxValues: CheckboxValuesType) => {
     let pool = 'abcdefghijklmnopqrstuvwxyz'
 
-    if(checkboxValues.uppercase){
+    if (checkboxValues.uppercase) {
       pool += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     }
 
-    if(checkboxValues.special){
+    if (checkboxValues.special) {
       pool += '!@#$%^&*()_-+=<>?/'
     }
 
-    if(checkboxValues.number){
+    if (checkboxValues.number) {
       pool += '0987654321'
     }
 
     return pool
   }
 
-  const generateRandomPassword =(length : number, characterPool : string) => {
-    let password : string = ""
+  const generateRandomPassword = (length: number, characterPool: string) => {
+    let password: string = ""
     const poolLength = characterPool.length
 
-    for(let i = 0; i < length; i++){
+    for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * poolLength)
       password += characterPool.charAt(randomIndex)
     }
@@ -51,15 +51,42 @@ function App() {
 
   const handleGeneratepassword = () => {
     const characterPool = generateCharacterPool(checkboxValues)
-    const newPassword = generateRandomPassword(passwordLength ,characterPool)
+    const newPassword = generateRandomPassword(passwordLength, characterPool)
     setGeneratedPassowrd(newPassword)
+
+    const hasUppercase = /[A-Z]/.test(newPassword);
+    const hasSpecialChar = /[!@#$%^&*()_+=<>?/]/.test(newPassword);
+    const hasNumber = /\d/.test(newPassword);
+
+    if (hasUppercase && hasSpecialChar && hasNumber) {
+
+      setStatus('strong')
+    } else if (hasNumber || hasUppercase || hasSpecialChar) {
+      setStatus('good')
+    } else {
+      setStatus('bad')
+    }
+  }
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        console.log("copied to clipboard");
+      })
+      .catch(() => {
+        console.error("error");
+      })
+  }
+
+  const handleCopy = () => {
+    copyToClipboard(generatedPassowrd)
   }
 
   useEffect(() => {
     handleGeneratepassword()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
-  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [passwordLength])
+
   return (
     <div className='mt-10'>
       <div className='text-center'>
@@ -75,17 +102,17 @@ function App() {
             <div className="flex flex-1 gap-10 justify-between border border-slate-400 rounded-2xl bg-white p-4">
               <h1 className="text-xl font-semibold">{generatedPassowrd}</h1>
               <div className="flex items-center gap-2">
-                <div className="bg-blue-500 rounded-lg px-2 py-0.5">
+              <div className={`rounded-lg px-2 py-0.5 ${status === 'strong' ? 'bg-green-500' : status === 'bad' ? 'bg-red-500' : 'bg-blue-500'}`}>
                   <p className="text-white uppercase">{status}</p>
                 </div>
-                <i 
-                className="fas fa-rotate-right mt-1 text-gray-500 active:rotate-180 transition duration-300 hover:cursor-pointer"
-                onClick={handleGeneratepassword}></i>
+                <i
+                  className="fas fa-rotate-right mt-1 text-gray-500 active:rotate-180 transition duration-300 hover:cursor-pointer"
+                  onClick={handleGeneratepassword}></i>
               </div>
             </div>
-            <button className="bg-black text-white py-2 px-4 rounded-lg mt-4 sm:mt-0">
-              Copy
-            </button>
+              <button className="bg-black text-white py-2 px-4 rounded-lg mt-4 sm:mt-0" onClick={handleCopy}>
+                Copy
+              </button>
           </div>
           <div className='mt-10'>
             <div className='flex gap-5'>
