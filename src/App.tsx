@@ -4,11 +4,13 @@ import Slider from './component/Slider'
 import CheckBox from './component/CheckBox';
 import React, { useEffect } from 'react';
 import { CheckboxValuesType } from './interface';
+import { motion } from 'framer-motion'
 
 function App() {
   const [passwordLength, setPasswordLength] = React.useState<number>(10);
   const [status, setStatus] = React.useState<string>('good');
   const [generatedPassowrd, setGeneratedPassowrd] = React.useState<string>('');
+  const [copied, setCopied] = React.useState<boolean>(false)
   const [checkboxValues, setCheckboxValues] = React.useState<CheckboxValuesType>({
     uppercase: true,
     special: true,
@@ -50,6 +52,7 @@ function App() {
   }
 
   const handleGeneratepassword = () => {
+    setCopied(false)
     const characterPool = generateCharacterPool(checkboxValues)
     const newPassword = generateRandomPassword(passwordLength, characterPool)
     setGeneratedPassowrd(newPassword)
@@ -59,7 +62,6 @@ function App() {
     const hasNumber = /\d/.test(newPassword);
 
     if (hasUppercase && hasSpecialChar && hasNumber) {
-
       setStatus('strong')
     } else if (hasNumber || hasUppercase || hasSpecialChar) {
       setStatus('good')
@@ -71,7 +73,7 @@ function App() {
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
       .then(() => {
-        console.log("copied to clipboard");
+        setCopied(!copied)
       })
       .catch(() => {
         console.error("error");
@@ -85,7 +87,7 @@ function App() {
   useEffect(() => {
     handleGeneratepassword()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [passwordLength])
+  }, [passwordLength, checkboxValues])
 
   return (
     <div className='mt-10'>
@@ -102,7 +104,7 @@ function App() {
             <div className="flex flex-1 gap-10 justify-between border border-slate-400 rounded-2xl bg-white p-4">
               <h1 className="text-xl font-semibold">{generatedPassowrd}</h1>
               <div className="flex items-center gap-2">
-              <div className={`rounded-lg px-2 py-0.5 ${status === 'strong' ? 'bg-green-500' : status === 'bad' ? 'bg-red-500' : 'bg-blue-500'}`}>
+                <div className={`rounded-lg px-2 py-0.5 ${status === 'strong' ? 'bg-green-500' : status === 'bad' ? 'bg-red-500' : 'bg-blue-500'}`}>
                   <p className="text-white uppercase">{status}</p>
                 </div>
                 <i
@@ -110,9 +112,9 @@ function App() {
                   onClick={handleGeneratepassword}></i>
               </div>
             </div>
-              <button className="bg-black text-white py-2 px-4 rounded-lg mt-4 sm:mt-0" onClick={handleCopy}>
-                Copy
-              </button>
+            <motion.button className="bg-black text-white py-2 px-5 rounded-lg mt-4 sm:mt-0" whileTap={{ scale: 0.95 }} onClick={handleCopy}>
+              {copied ? "copied" : "copy"}
+            </motion.button>
           </div>
           <div className='mt-10'>
             <div className='flex gap-5'>
