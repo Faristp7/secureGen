@@ -3,6 +3,7 @@ import '../App.css'
 import {  CheckBoxProps } from '../interface'
 
 const CheckBox: React.FC<CheckBoxProps> = ({ checkboxValues, setCheckboxValues }) => {
+    console.log(checkboxValues)
     return (
         <div className='flex justify-between'>
             <div className='flex gap-2'>
