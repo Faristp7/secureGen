@@ -11,6 +11,7 @@ const Slider: React.FC<SliderProps> = ({ onSlide }) => {
   const handleSlide = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value, 10);
     setValue(newValue);
+    
     onSlide(newValue);
   };
 
